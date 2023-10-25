@@ -1,16 +1,18 @@
 package main;
 
+import java.util.Scanner;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 
-public class Admin extends Welcome implements ArtInterface, ArtistInterface {
-	
+public class Admin implements ArtInterface, ArtistInterface {
+	private Scanner sc = new Scanner(System.in);
+	private Check check = new Check();
 	private static LinkedList<Artist> artistList = new LinkedList<>();
 	private static LinkedList<Art> artList = new LinkedList<>();
-	LinkedList<Order> orderList = User.getOrderList();
+	private LinkedList<Order> orderList = User.getOrderList();
 	
-	Admin() {
+	public void adminLogin() {
 		System.out.print("Enter Admin Name: ");
 		String name = sc.nextLine();
 		
@@ -21,12 +23,12 @@ public class Admin extends Welcome implements ArtInterface, ArtistInterface {
 			adminWelcome();			
 		} else {
 			System.out.println("Invalid username and password");
-			new Admin();
+			adminLogin();
 		}
 	}
 	
 	private void adminWelcome() {
-		switch(adminWelcomeOption()) {
+		switch(Welcome.getWel().adminWelcomeOption()) {
 			case 1: addArtist(); break;
 			case 2: updateArtist(); break;
 			case 3: deleteArtist(); break;
@@ -34,7 +36,7 @@ public class Admin extends Welcome implements ArtInterface, ArtistInterface {
 			case 5: deleteArt(); break;
 			case 6: viewOrder(); break;
 			case 7: viewArtistSale(); break;
-			case 8: welcome(); break;
+			case 8: Welcome.getWel().welcome(); break;
 		}
 		adminWelcome();
 	}

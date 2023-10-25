@@ -5,7 +5,20 @@ import java.util.Scanner;
 public class Welcome {
 	Scanner sc = new Scanner(System.in);
 	Check check = new Check();
+	Admin admin = new Admin();
+	User user = new User();
+	
 	private String option = "";
+	
+	private Welcome() {
+		new AddList();
+	}
+	
+	private static Welcome wel = new Welcome();
+	
+	public static Welcome getWel() {
+		return wel;
+	}
 	
 	private int welcomeOption() {
 		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
@@ -29,7 +42,7 @@ public class Welcome {
 		return Integer.parseInt(option);
 	}
 	
-	protected int adminWelcomeOption() {
+	public int adminWelcomeOption() {
 		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		System.out.println("                                                Welcome Admin                                                ");
 		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
@@ -56,7 +69,7 @@ public class Welcome {
 		return Integer.parseInt(option);	
 	}
 	
-	protected int userWelcomeOption() {
+	public int userWelcomeOption() {
 		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		System.out.println("                                                Welcome User                                                 ");
 		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
@@ -84,9 +97,10 @@ public class Welcome {
 	
 	public void welcome() {
 		switch(welcomeOption()) {
-			case 1: new Admin(); break;
-			case 2: new User(); break;
+			case 1: admin.adminLogin(); break;
+			case 2: user.userLogin(); break;
 			case 3: System.exit(0);
 		}
 	}
+	
 }

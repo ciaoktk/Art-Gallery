@@ -1,17 +1,19 @@
 package main;
 
+import java.util.Scanner;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedList;
 
-public class User extends Welcome implements OrderInterface {
-	
+public class User implements OrderInterface {
+	private Scanner sc = new Scanner(System.in);
+	private Check check = new Check();
 	private static LinkedList<Order> orderList = new LinkedList<>();
 	private LinkedList<Artist> artistList = Admin.getArtistList();
 	private LinkedList<Art> artList = Admin.getArtList();
 	
-	User() {
+	public void userLogin() {
 		System.out.print("Enter User Name: ");
 		String name = sc.nextLine();
 		
@@ -22,26 +24,26 @@ public class User extends Welcome implements OrderInterface {
 			userWelcome();			
 		} else {
 			System.out.println("Invalid username and password");
-			new User();
+			userLogin();
 		}
 	}
 	
 	private void userWelcome() {
-		switch(userWelcomeOption()) {
+		switch(Welcome.getWel().userWelcomeOption()) {
 			case 1: viewSortedArt(); break;
 			case 2: searchByArtist(); break;
 			case 3: addOrder(); break;
 			case 4: deleteOrder(); break;
 			case 5: viewOrder(); break;
 			case 6: viewPayment(); break;
-			case 7: welcome(); break;
+			case 7: Welcome.getWel().welcome(); break;
 		}
 		userWelcome();
 	}
 	
 	private void viewSortedArt() {
 		if(!artList.isEmpty()) {
-			Comparator<Art> cmp = Comparator.comparing(Art::getPrice);
+			Comparator<Art> cmp = Comparator.comparing(Art::getArtNo);
 			Collections.sort(artList, cmp);
 			System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 			System.out.println("                                               List of Arts                                                  ");
@@ -237,7 +239,7 @@ public class User extends Welcome implements OrderInterface {
 			System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 			char status;
 			do {
-				System.out.println("Customer name: ");
+				System.out.print("Customer name: ");
 				String customerName = sc.nextLine();
 				
 				boolean found = false;

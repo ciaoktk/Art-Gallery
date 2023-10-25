@@ -39,6 +39,13 @@ public class Check {
 			throw new Exception("Address format is incorrect, try again!");
 	}
 	
+	public boolean checkCustomerAddress(String address) throws Exception {
+		if(Pattern.matches("[0-9]+(, [A-Z][a-z]*( [A-Z][a-z]*)*)+", address)) {
+			return true;
+		} else
+			throw new Exception("Address format is incorrect, try again!");
+	}
+	
 	public boolean checkCategory(String category) throws Exception {
 		Matcher matcher = Pattern.compile("Potrait|Landscape|Realism|Action|Abstract|Modern").matcher(category);
 		if(matcher.find()) 

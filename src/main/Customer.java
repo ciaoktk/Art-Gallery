@@ -1,24 +1,24 @@
 package main;
 
-public class Artist {
-	private int artistNo;
+public class Customer {
+	private int customerNo;
 	private String name;
 	private String address;
 	private String phNo;
 	
-	public Artist(int artistNo, String name, String address, String phNo) {
+	public Customer(int customerNo, String name, String address, String phNo) {
 		super();
-		this.artistNo = artistNo;
+		this.customerNo = customerNo;
 		this.name = name;
 		this.address = address;
 		this.phNo = phNo;
 	}
 	
-	public int getArtistNo() {
-		return artistNo;
+	public int getCustomerNo() {
+		return customerNo;
 	}
-	public void setArtistNo(int artistNo) {
-		this.artistNo = artistNo;
+	public void setCustomerNo(int customerNo) {
+		this.customerNo = customerNo;
 	}
 	
 	public String getName() {
@@ -41,6 +41,4 @@ public class Artist {
 	public void setPhNo(String phNo) {
 		this.phNo = phNo;
 	}
-	
-	
 }

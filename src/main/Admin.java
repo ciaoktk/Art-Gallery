@@ -1,12 +1,14 @@
 package main;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
-import java.util.ArrayList;
 
-public class Admin extends Welcome {
+public class Admin extends Welcome implements ArtInterface, ArtistInterface {
 	
-	private LinkedList<Artist> artistList = new LinkedList<>();
-	private LinkedList<Art> artList = new LinkedList<>();
+	private static LinkedList<Artist> artistList = new LinkedList<>();
+	private static LinkedList<Art> artList = new LinkedList<>();
+	LinkedList<Order> orderList = User.getOrderList();
 	
 	Admin() {
 		System.out.print("Enter Admin Name: ");
@@ -30,33 +32,37 @@ public class Admin extends Welcome {
 			case 3: deleteArtist(); break;
 			case 4: addArt(); break;
 			case 5: deleteArt(); break;
-			case 6: ; break;
-			case 7: ; break;
+			case 6: viewOrder(); break;
+			case 7: viewArtistSale(); break;
 			case 8: welcome(); break;
 		}
+		adminWelcome();
 	}
 	
-	private void addArtist() {
-		Artist artist;
+	@Override
+	public void addArtist() {
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		System.out.println("                                               Add New Artist                                                ");
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		char status;
 		do {
-			artist = new Artist();
+			int artNo;
+			String name, address = "", phNo = "";
 			if(artistList.isEmpty())
-				artist.setArtistNo(1);
+				artNo = 1;
 			else 
-				artist.setArtistNo(artistList.getLast().getArtistNo() + 1);
+				artNo = artistList.getLast().getArtistNo() + 1;
 			
 			System.out.print("Artist name: ");
-			artist.setName(sc.nextLine());
+			name = sc.nextLine();
 			
 			boolean addressStatus = false;
 			while(!addressStatus) {
 				try {
 					System.out.print("Artist address (Town, Township): ");
-					String address = sc.nextLine();
+					address = sc.nextLine();
 					
 					if(check.checkArtistAddress(address)) {
-						artist.setAddress(address);
 						addressStatus = true;
 					}
 				} catch(Exception e) {
@@ -67,11 +73,10 @@ public class Admin extends Welcome {
 			boolean phStatus = false;
 			while(!phStatus) {
 				try {
-					System.out.println("Artist phone number: ");
-					String phNo = sc.next();
+					System.out.print("Artist phone number: ");
+					phNo = sc.next();
 					
 					if(check.checkPhNo(phNo)) {
-						artist.setPhNo(phNo);
 						phStatus = true;
 					}
 						
@@ -79,175 +84,157 @@ public class Admin extends Welcome {
 					System.out.println(e.getMessage());
 				}
 			}
-			artistList.add(artist);
+			artistList.add(new Artist(artNo, name, address, phNo));
+			System.out.println("Artist Added Successfully.");
 			
-			System.out.print("Add another artist? y/n: ");
+			System.out.print("\nAdd another artist? y/n: ");
 			status = sc.next().charAt(0);
 			sc.nextLine();
 		} while(status != 'n');
 		
 		viewArtist();
-		adminWelcome();
 	}
 	
-	private void updateArtist() {
-		char status;
-		do {
-			System.out.print("Artist name: ");
-			String name = sc.nextLine();
-			
-			boolean found = false;
-			for(Artist artist: artistList) {
-				if(artist.getName().equalsIgnoreCase(name)) {
-					System.out.println(artist.getArtistNo() + "\t" + artist.getName() + "\t\t" + artist.getAddress() + "\t" + artist.getPhNo());
-					boolean addressStatus = false;
-					while(!addressStatus) {
-						try {
-							System.out.print("Artist address (Town, Township): ");
-							String address = sc.nextLine();
-							
-							if(check.checkArtistAddress(address)) {
-								artist.setAddress(address);
-								addressStatus = true;
-							}
-						} catch(Exception e) {
-							System.out.println(e.getMessage());
-						}
-					}
-					
-					boolean phStatus = false;
-					while(!phStatus) {
-						try {
-							System.out.println("Artist phone number: ");
-							String phNo = sc.next();
-							
-							if(check.checkPhNo(phNo)) {
-								artist.setPhNo(phNo);
-								phStatus = true;
-							}
+	@Override
+	public void updateArtist() {
+		if(!artistList.isEmpty()) {
+			System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+			System.out.println("                                                Update Artist                                                ");
+			System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+			char status;
+			do {
+				viewArtist();
+				System.out.print("Artist name: ");
+				String name = sc.nextLine();
+				
+				boolean found = false;
+				for(Artist artist: artistList) {
+					if(artist.getName().equalsIgnoreCase(name)) {
+						System.out.println(artist.getArtistNo() + "\t" + artist.getName() + "\t" + artist.getAddress() + "\t" + artist.getPhNo());
+						boolean addressStatus = false;
+						while(!addressStatus) {
+							try {
+								System.out.print("Artist address (Town, Township): ");
+								String address = sc.nextLine();
 								
-						} catch(Exception e) {
-							System.out.println(e.getMessage());
+								if(check.checkArtistAddress(address)) {
+									artist.setAddress(address);
+									addressStatus = true;
+								}
+							} catch(Exception e) {
+								System.out.println(e.getMessage());
+							}
 						}
+						
+						boolean phStatus = false;
+						while(!phStatus) {
+							try {
+								System.out.println("Artist phone number: ");
+								String phNo = sc.next();
+								
+								if(check.checkPhNo(phNo)) {
+									artist.setPhNo(phNo);
+									phStatus = true;
+								}
+									
+							} catch(Exception e) {
+								System.out.println(e.getMessage());
+							}
+						}
+						System.out.println("Artist Updated Successfully.");
+						found = true;
+						break;
 					}
-					System.out.println("Artist Updated Successfully.");
-					found = true;
-					break;
 				}
-			}
-			if(!found)
-				System.out.println("There is no artist with such name.");
-			
-			System.out.print("Update another artist? y/n: ");
-			status = sc.next().charAt(0);
-			sc.nextLine();
-		} while(status != 'n');
-		
-		adminWelcome();
+				if(!found)
+					System.out.println("There is no artist with such name.");
+				
+				System.out.print("\nUpdate another artist? y/n: ");
+				status = sc.next().charAt(0);
+				sc.nextLine();
+			} while(status != 'n');
+		} else
+			System.out.println("There is no artist yet.");
 	}
 	
-	private void deleteArtist() {
-		char status;
-		do {
-			System.out.print("Artist name: ");
-			String name = sc.nextLine();
-			
-			boolean found = false;
-			for(Artist artist: artistList) {
-				if(artist.getName().equalsIgnoreCase(name)) {
-					System.out.println(artist.getArtistNo() + "\t" + artist.getName() + "\t\t" + artist.getAddress() + "\t" + artist.getPhNo());
-					System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-					boolean artPresent = false;
-					for(Art art: artList) {
-						if(artist.getName().equals(art.getArtistName())) {
-							String tag;
-							if(!art.isSoldout())
-								tag = "Sale";
-							else
-								tag = "Sold Out";
-							System.out.println(art.getArtNo() + "\t" + art.getCategory() + "\t" + art.getName() + "\t" + art.getDescription() + "\t" + art.getPrice() + "\t" + art.getArtistName() + "\t" + tag);
-							artPresent = true;
-						}
-					}
-					
-					if(!artPresent) {
+	@Override
+	public void deleteArtist() {
+		if(!artistList.isEmpty()) {
+			System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+			System.out.println("                                                Delete Artist                                                ");
+			System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+			char status;
+			do {
+				viewArtist();
+				System.out.print("Artist name: ");
+				String name = sc.nextLine();
+				
+				boolean found = false;
+				for(Artist artist: artistList) {
+					if(artist.getName().equalsIgnoreCase(name)) {
+						System.out.println(artist.getArtistNo() + "\t" + artist.getName() + "\t\t" + artist.getAddress() + "\t" + artist.getPhNo());
 						System.out.print("Are you sure you want to delete the artist? y/n: ");
 						if(sc.next().charAt(0) == 'y') {
 							artistList.remove(artist);
 							System.out.println("Artist Deleted Successfully.");
 						} else 
 							System.out.println("Artist wasn't deleted.");
-							
-					} else {
-						System.out.print("There are arts of this artist. \nDeleting the artist will also delete the arts. \nAre you sure you want to delete the artist? y/n: ");
-						if(sc.next().charAt(0) == 'y') {
-							ArrayList<Art> toDelete = new ArrayList<>();
-							for(Art art: artList) {
-								if(artist.getName().equals(art.getArtistName())) {
-									toDelete.add(art);
-								}
-							}
-							for(Art del: toDelete) {
-								artList.remove(del);
-							}
-							artistList.remove(artist);
-							System.out.println("Artist Deleted Successfully.");
-						} else
-							System.out.println("Artist wasn't deleted.");
-					}
-					found = true;
-					break;
+						found = true;
+						break;
+					} 
 				}
-			}
-			if(!found)
-				System.out.println("There is no artist with such name.");
-			
-			System.out.print("Delete another artist? y/n: ");
-			status = sc.next().charAt(0);
-			sc.nextLine();
-		} while(status != 'n');
-		
-		adminWelcome();
+				if(!found)
+					System.out.println("There is no artist with such name.");
+				
+				System.out.print("\nDelete another artist? y/n: ");
+				status = sc.next().charAt(0);
+				sc.nextLine();
+			} while(status != 'n');
+		} else
+			System.out.println("There is no artist yet.");
 	}
 	
-	private void viewArtist() {
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		System.out.println("                           List of Artists                           ");
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+	@Override
+	public void viewArtist() {
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		System.out.println("                                              List of Artists                                                ");
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		for(Artist artist: artistList) {
-			System.out.println(artist.getArtistNo() + "\t" + artist.getName() + "\t\t" + artist.getAddress() + "\t" + artist.getPhNo());
+			System.out.println(artist.getArtistNo() + "\t" + artist.getName() + "\t" + artist.getAddress() + "\t" + artist.getPhNo());
 		}
 	}
 	
-	private void addArt() {
-		Art art;
+	@Override
+	public void addArt() {
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		System.out.println("                                                Add New Art                                                  ");
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		char status;
 		do {
-			art = new Art();
-			
+			int artNo;
+			String category = "", name, description, price = "", artistName;
 			System.out.print("Artist name: ");
-			String name = sc.nextLine();
+			artistName = sc.nextLine();
 			
 			boolean found = false;
 			for(Artist artist: artistList) {
-				if(artist.getName().equalsIgnoreCase(name)) {
+				if(artist.getName().equalsIgnoreCase(artistName)) {
 					
 					if(artList.isEmpty())
-						art.setArtNo(1);
+						artNo = 1;
 					else 
-						art.setArtNo(artList.getLast().getArtNo() + 1);
+						artNo = artList.getLast().getArtNo() + 1;
 					
 					boolean catStatus = false;
 					while(!catStatus) {
 						try {
 							System.out.print("Choose category (Potrait, Landscape, Realism, Action, Abstract or Modern): ");
-							String category = sc.next();
+							category = sc.next();
 							
 							if(check.checkCategory(category)) {
-								art.setCategory(category);
 								catStatus = true;
 							}
-								
+							
 						} catch(Exception e) {
 							System.out.println(e.getMessage());
 						}
@@ -255,34 +242,28 @@ public class Admin extends Welcome {
 					
 					sc.nextLine();
 					System.out.print("Art name: ");
-					art.setName(sc.nextLine());
+					name = sc.nextLine();
 					
 					System.out.print("Art Description: ");
-					art.setDescription(sc.nextLine());
+					description = sc.nextLine();
 					
 					boolean priceStatus = false;
 					while(!priceStatus) {
 						try {
 							System.out.print("Art price: ");
-							String price = sc.next();
+							price = sc.next();
 							
 							if(check.checkPrice(price)) {
-								art.setPrice(Float.parseFloat(price));
 								priceStatus = true;
 							}
 								
 						} catch(Exception e) {
 							System.out.println(e.getMessage());
 						}
-					}
+					}				
 					
-
-					art.setArtistName(artist.getName());
-					
-					art.setSoldout(false);					
-					
-					artList.add(art);
-					
+					artList.add(new Art(artNo, category, name, description, Float.parseFloat(price), artistName, false));
+					System.out.println("Art Added Successfully.");
 					found = true;
 					break;
 				}
@@ -290,54 +271,79 @@ public class Admin extends Welcome {
 			if(!found)
 				System.out.println("There is no artist with such name. \nPlease add artist first before adding an art.");
 			
-			System.out.print("Add another art? y/n: ");
+			System.out.print("\nAdd another art? y/n: ");
 			status = sc.next().charAt(0);
 			sc.nextLine();
 		} while(status != 'n');
 		
 		viewArt();
-		adminWelcome();
 	}
 
-	private void deleteArt() {
-		char status;
-		do {
-			System.out.print("Art name: ");
-			String name = sc.nextLine();
-			
-			boolean found = false;
-			for(Art art: artList) {
-				if(art.getName().equalsIgnoreCase(name)) {
-					String tag;
-					if(!art.isSoldout())
-						tag = "Sale";
-					else
-						tag = "Sold Out";
-					System.out.println(art.getArtNo() + "\t" + art.getCategory() + "\t" + art.getName() + "\t" + art.getDescription() + "\t" + art.getPrice() + "\t" + art.getArtistName() + "\t" + tag);
+	@Override
+	public void deleteArt() {
+		if(!artList.isEmpty()) {
+			System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+			System.out.println("                                                 Delete Art                                                  ");
+			System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+			char status;
+			do {
+				viewArt();
+				System.out.print("Art name: ");
+				String name = sc.nextLine();
 				
-					System.out.print("Are u srue you want to delete this art? y/n: ");
-					if(sc.next().charAt(0) == 'y')
-						artList.remove(art);
-					System.out.println("Art Deleted Successfully.");
-					found = true;
-					break;
+				boolean found = false;
+				for(Art art: artList) {
+					if(art.getName().equalsIgnoreCase(name)) {
+						String tag;
+						if(!art.isSoldout())
+							tag = "Sale";
+						else
+							tag = "Sold Out";
+						System.out.println(art.getArtNo() + "\t" + art.getCategory() + "\t" + art.getName() + "\t" + art.getDescription() + "\t" + art.getPrice() + "\t" + art.getArtistName() + "\t" + tag);
+						System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+						boolean orderPresent = false;
+						for(Order order: orderList) {
+							if(order.getArtName().equalsIgnoreCase(art.getName())) {
+								System.out.println(order.getOrderNo() + "\t" + order.getArtName() + "\t" + order.getCustomer().getCustomerNo() + "\t" + order.getCustomer().getName() + "\t" + order.getCustomer().getAddress() + "\t" + order.getCustomer().getPhNo() + "\t" + order.getDate().toString());
+								System.out.print("This art is on order. \nDeleting art will also delete the order. \nAre you sure you want to delete this art? y/n: ");
+								if(sc.next().charAt(0) == 'y') {
+									orderList.remove(order);
+									artList.remove(art);
+									System.out.println("Art Deleted Successfully.");
+								} else
+									System.out.println("Art wasn't deleted.");
+								orderPresent = true;
+								break;
+							}
+						}
+						if(!orderPresent) {
+							System.out.print("Are you srue you want to delete this art? y/n: ");
+							if(sc.next().charAt(0) == 'y') {
+								artList.remove(art);
+								System.out.println("Art Deleted Successfully.");
+							} else 
+								System.out.println("Art wasn't deleted.");
+						}
+						found = true;
+						break;
+					}
 				}
-			}
-			if(!found)
-				System.out.println("There is no art with such name.");
-			
-			System.out.print("Delete another art? y/n: ");
-			status = sc.next().charAt(0);
-			sc.nextLine();
-		} while(status != 'n');
-		
-		adminWelcome();
+				if(!found)
+					System.out.println("There is no art with such name.");
+				
+				System.out.print("\nDelete another art? y/n: ");
+				status = sc.next().charAt(0);
+				sc.nextLine();
+			} while(status != 'n');
+		} else
+			System.out.println("There is no art yet.");
 	}
 	
-	private void viewArt() {
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		System.out.println("                                     List of Arts                                     ");
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+	@Override
+	public void viewArt() {
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		System.out.println("                                                List of Arts                                                 ");
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		for(Art art: artList) {
 			String tag;
 			if(!art.isSoldout())
@@ -348,11 +354,64 @@ public class Admin extends Welcome {
 		}
 	}
 	
-	public LinkedList<Artist> getArtistList() {
+	private void viewOrder() {
+		if(!orderList.isEmpty()) {
+			Comparator<Order> cmp = Comparator.comparing(Order::getDate);
+			Collections.sort(orderList, cmp);
+			System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+			System.out.println("                                               List of Orders                                                ");
+			System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+			for(Order order: orderList) {
+				System.out.println(order.getOrderNo() + "\t" + order.getArtName() + "\t" + order.getCustomer().getCustomerNo() + "\t" + order.getCustomer().getName() + "\t" + order.getCustomer().getAddress() + "\t" + order.getCustomer().getPhNo() + "\t" + order.getDate().toString());
+			}
+		} else
+			System.out.println("There is no order yet.");
+	}
+
+	private void viewArtistSale() {
+		if(!orderList.isEmpty()) {
+			System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+			System.out.println("                                             View Artists' Sales                                             ");
+			System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+			char status;
+			do {
+				viewArtist();
+				System.out.print("Artist name: ");
+				String name = sc.nextLine();
+				float total = 0;
+				
+				boolean found = false;
+				for(Order order: orderList) {
+					for(Art art: artList) {
+						if(art.getName().equalsIgnoreCase(order.getArtName())) {
+							for(Artist artist: artistList) {
+								if(artist.getName().equalsIgnoreCase(name) && art.getArtistName().equalsIgnoreCase(artist.getName())) {
+									total += art.getPrice();
+									found = true;
+								}
+							}
+						}
+					}
+				}
+				
+				if(!found)
+					System.out.println("There is no artist with such name on sale.");
+				else
+					System.out.println("Total sales of artist: " + total);
+				
+				System.out.print("View another artist? y/n: ");
+				status = sc.next().charAt(0);
+				sc.nextLine();
+			} while(status != 'n');
+		} else 
+			System.out.println("There is no order yet.");
+	}
+	
+	public static LinkedList<Artist> getArtistList() {
 		return artistList;
 	}
 	
-	public LinkedList<Art> getArtList() {
+	public static LinkedList<Art> getArtList() {
 		return artList;
 	}
 }

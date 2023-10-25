@@ -5,13 +5,14 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 
-public class Admin implements ArtInterface, ArtistInterface {
+public class Admin implements AdminInterface, ArtInterface, ArtistInterface {
 	private Scanner sc = new Scanner(System.in);
 	private Check check = new Check();
 	private static LinkedList<Artist> artistList = new LinkedList<>();
 	private static LinkedList<Art> artList = new LinkedList<>();
 	private LinkedList<Order> orderList = User.getOrderList();
 	
+	@Override
 	public void adminLogin() {
 		System.out.print("Enter Admin Name: ");
 		String name = sc.nextLine();
@@ -27,7 +28,8 @@ public class Admin implements ArtInterface, ArtistInterface {
 		}
 	}
 	
-	private void adminWelcome() {
+	@Override
+	public void adminWelcome() {
 		switch(Welcome.getWel().adminWelcomeOption()) {
 			case 1: addArtist(); break;
 			case 2: updateArtist(); break;
@@ -356,7 +358,8 @@ public class Admin implements ArtInterface, ArtistInterface {
 		}
 	}
 	
-	private void viewOrder() {
+	@Override
+	public void viewOrder() {
 		if(!orderList.isEmpty()) {
 			Comparator<Order> cmp = Comparator.comparing(Order::getDate);
 			Collections.sort(orderList, cmp);
@@ -370,7 +373,8 @@ public class Admin implements ArtInterface, ArtistInterface {
 			System.out.println("There is no order yet.");
 	}
 
-	private void viewArtistSale() {
+	@Override
+	public void viewArtistSale() {
 		if(!orderList.isEmpty()) {
 			System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 			System.out.println("                                             View Artists' Sales                                             ");

@@ -6,13 +6,14 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedList;
 
-public class User implements OrderInterface {
+public class User implements UserInterface, OrderInterface {
 	private Scanner sc = new Scanner(System.in);
 	private Check check = new Check();
 	private static LinkedList<Order> orderList = new LinkedList<>();
 	private LinkedList<Artist> artistList = Admin.getArtistList();
 	private LinkedList<Art> artList = Admin.getArtList();
 	
+	@Override
 	public void userLogin() {
 		System.out.print("Enter User Name: ");
 		String name = sc.nextLine();
@@ -28,7 +29,8 @@ public class User implements OrderInterface {
 		}
 	}
 	
-	private void userWelcome() {
+	@Override
+	public void userWelcome() {
 		switch(Welcome.getWel().userWelcomeOption()) {
 			case 1: viewSortedArt(); break;
 			case 2: searchByArtist(); break;
@@ -41,7 +43,8 @@ public class User implements OrderInterface {
 		userWelcome();
 	}
 	
-	private void viewSortedArt() {
+	@Override
+	public void viewSortedArt() {
 		if(!artList.isEmpty()) {
 			Comparator<Art> cmp = Comparator.comparing(Art::getArtNo);
 			Collections.sort(artList, cmp);
@@ -60,7 +63,8 @@ public class User implements OrderInterface {
 			System.out.println("No current art.");
 	}
 
-	private void searchByArtist() {
+	@Override
+	public void searchByArtist() {
 		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		System.out.println("                                             Search By Artist                                                ");
 		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
@@ -210,6 +214,12 @@ public class User implements OrderInterface {
 								System.out.println(order.getOrderNo() + "\t" + order.getArtName() + "\t" + order.getCustomer().getCustomerNo() + "\t" + order.getCustomer().getName() + "\t" + order.getCustomer().getAddress() + "\t" + order.getCustomer().getPhNo() + "\t" + order.getDate().toString());				
 								System.out.print("Are you sure you want to delete this order? y/n: ");
 								if(sc.next().charAt(0) == 'y') {
+									for(Art art: artList) {
+										if(art.getName().equalsIgnoreCase(artName)) {
+											art.setSoldout(false);
+											break;
+										}
+									}
 									orderList.remove(order);
 									System.out.println("Order Deleted Successfully.");
 								} else 
@@ -232,7 +242,8 @@ public class User implements OrderInterface {
 			System.out.println("There is no order yet.");
 	}
 	
-	private void viewOrder() {
+	@Override
+	public void viewOrder() {
 		if(!orderList.isEmpty()) {
 			System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 			System.out.println("                                                 View Order                                                  ");
@@ -260,7 +271,8 @@ public class User implements OrderInterface {
 			System.out.println("There is no order yet.");
 	}
 	
-	private void viewPayment() {
+	@Override
+	public void viewPayment() {
 		if(!orderList.isEmpty()) {
 			System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 			System.out.println("                                               View Payment                                                  ");

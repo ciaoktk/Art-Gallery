@@ -8,3 +8,4 @@ public interface UserInterface {
 	void viewOrder();
 	void viewPayment();
 }
+

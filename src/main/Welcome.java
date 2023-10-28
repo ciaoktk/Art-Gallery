@@ -1,5 +1,6 @@
 package main;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Welcome {
@@ -8,7 +9,7 @@ public class Welcome {
 	Admin admin = new Admin();
 	User user = new User();
 	
-	private String option = "";
+	private int option = 0;
 	
 	private Welcome() {
 		new AddList();
@@ -31,15 +32,19 @@ public class Welcome {
 		while(!status) {
 			try {
 				System.out.print("Choose option: ");
-				option = sc.nextLine();
+				option = sc.nextInt();
 				
 				if(check.checkWelcomeOption(option))
 					status = true;
+			} catch(InputMismatchException e) {
+				System.out.println("Input must be integer.");
+				sc.nextLine();
+//				e.getMessage(); 
 			} catch(Exception e) {
 				System.out.println(e.getMessage());
-			}
+			} 
 		}		
-		return Integer.parseInt(option);
+		return option;
 	}
 	
 	public int adminWelcomeOption() {
@@ -58,15 +63,19 @@ public class Welcome {
 		while(!status) {
 			try {
 				System.out.print("Choose option: ");
-				option = sc.nextLine();
+				option = sc.nextInt();
 				
 				if(check.checkAdminOption(option))
 					status = true;
+			} catch(InputMismatchException e) {
+				System.out.println("Input must be integer.");
+				sc.nextLine();
+//				e.getMessage(); 
 			} catch(Exception e) {
 				System.out.println(e.getMessage());
 			}
 		}		
-		return Integer.parseInt(option);	
+		return option;	
 	}
 	
 	public int userWelcomeOption() {
@@ -84,15 +93,19 @@ public class Welcome {
 		while(!status) {
 			try {
 				System.out.print("Choose option: ");
-				option = sc.nextLine();
+				option = sc.nextInt();
 				
 				if(check.checkUserOption(option))
 					status = true;
+			} catch(InputMismatchException e) {
+				System.out.println("Input must be integer.");
+				sc.nextLine();
+//				e.getMessage(); 
 			} catch(Exception e) {
 				System.out.println(e.getMessage());
 			}
 		}		
-		return Integer.parseInt(option);	
+		return option;	
 	}
 	
 	public void welcome() {

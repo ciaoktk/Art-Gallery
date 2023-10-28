@@ -4,22 +4,22 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Check {
-	public boolean checkWelcomeOption(String option) throws Exception {
-		if(Pattern.matches("[1-3]", option))
+	public boolean checkWelcomeOption(int option) throws Exception {
+		if(Pattern.matches("[1-3]", ""+option))
 			return true;
 		else 
 			throw new Exception("Option should be from 1 to 3.");
 	}
 	
-	public boolean checkAdminOption(String option) throws Exception {
-		if(Pattern.matches("[1-8]", option))
+	public boolean checkAdminOption(int option) throws Exception {
+		if(Pattern.matches("[1-8]", ""+option))
 			return true;
 		else 
 			throw new Exception("Option should be from 1 to 8.");
 	}
 	
-	public boolean checkUserOption(String option) throws Exception {
-		if(Pattern.matches("[1-7]", option))
+	public boolean checkUserOption(int option) throws Exception {
+		if(Pattern.matches("[1-7]", ""+option))
 			return true;
 		else 
 			throw new Exception("Option should be from 1 to 7.");

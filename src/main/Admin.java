@@ -79,7 +79,7 @@ public class Admin implements AdminInterface, ArtInterface, ArtistInterface {
 				try {
 					System.out.print("Artist phone number: ");
 					phNo = sc.next();
-					
+			
 					if(check.checkPhNo(phNo)) {
 						phStatus = true;
 					}
@@ -133,7 +133,7 @@ public class Admin implements AdminInterface, ArtInterface, ArtistInterface {
 						boolean phStatus = false;
 						while(!phStatus) {
 							try {
-								System.out.println("Artist phone number: ");
+								System.out.print("Artist phone number: ");
 								String phNo = sc.next();
 								
 								if(check.checkPhNo(phNo)) {
@@ -181,6 +181,7 @@ public class Admin implements AdminInterface, ArtInterface, ArtistInterface {
 						if(sc.next().charAt(0) == 'y') {
 							artistList.remove(artist);
 							System.out.println("Artist Deleted Successfully.");
+							viewArtist();
 						} else 
 							System.out.println("Artist wasn't deleted.");
 						found = true;
@@ -219,16 +220,13 @@ public class Admin implements AdminInterface, ArtInterface, ArtistInterface {
 			String category = "", name, description, price = "", artistName;
 			System.out.print("Artist name: ");
 			artistName = sc.nextLine();
-			
 			boolean found = false;
 			for(Artist artist: artistList) {
 				if(artist.getName().equalsIgnoreCase(artistName)) {
-					
 					if(artList.isEmpty())
 						artNo = 1;
 					else 
 						artNo = artList.getLast().getArtNo() + 1;
-					
 					boolean catStatus = false;
 					while(!catStatus) {
 						try {
@@ -238,12 +236,10 @@ public class Admin implements AdminInterface, ArtInterface, ArtistInterface {
 							if(check.checkCategory(category)) {
 								catStatus = true;
 							}
-							
 						} catch(Exception e) {
 							System.out.println(e.getMessage());
 						}
 					}
-					
 					sc.nextLine();
 					System.out.print("Art name: ");
 					name = sc.nextLine();
@@ -279,7 +275,6 @@ public class Admin implements AdminInterface, ArtInterface, ArtistInterface {
 			status = sc.next().charAt(0);
 			sc.nextLine();
 		} while(status != 'n');
-		
 		viewArt();
 	}
 
@@ -385,7 +380,6 @@ public class Admin implements AdminInterface, ArtInterface, ArtistInterface {
 				System.out.print("Artist name: ");
 				String name = sc.nextLine();
 				float total = 0;
-				
 				boolean found = false;
 				for(Order order: orderList) {
 					for(Art art: artList) {
@@ -399,7 +393,6 @@ public class Admin implements AdminInterface, ArtInterface, ArtistInterface {
 						}
 					}
 				}
-				
 				if(!found)
 					System.out.println("There is no artist with such name on sale.");
 				else

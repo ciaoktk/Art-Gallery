@@ -22,9 +22,9 @@ public class Welcome {
 	}
 	
 	private int welcomeOption() {
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		System.out.println("                                           Welcome To Art Gallery                                            ");
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		System.out.println("                  Welcome To Art Gallery                   ");
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		System.out.println("1. Admin");
 		System.out.println("2. User");
 		System.out.println("3. Exit");
@@ -39,7 +39,6 @@ public class Welcome {
 			} catch(InputMismatchException e) {
 				System.out.println("Input must be integer.");
 				sc.nextLine();
-//				e.getMessage(); 
 			} catch(Exception e) {
 				System.out.println(e.getMessage());
 			} 
@@ -48,9 +47,9 @@ public class Welcome {
 	}
 	
 	public int adminWelcomeOption() {
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		System.out.println("                                                Welcome Admin                                                ");
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		System.out.println("                       Welcome Admin                       ");
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		System.out.println("1. Add new artist");
 		System.out.println("2. Update artist information");
 		System.out.println("3. Delete artist");
@@ -70,7 +69,6 @@ public class Welcome {
 			} catch(InputMismatchException e) {
 				System.out.println("Input must be integer.");
 				sc.nextLine();
-//				e.getMessage(); 
 			} catch(Exception e) {
 				System.out.println(e.getMessage());
 			}
@@ -79,9 +77,9 @@ public class Welcome {
 	}
 	
 	public int userWelcomeOption() {
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		System.out.println("                                                Welcome User                                                 ");
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		System.out.println("                       Welcome User                        ");
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		System.out.println("1. View Sorted Art");
 		System.out.println("2. Search art by artist name");
 		System.out.println("3. Add new order");
@@ -99,8 +97,7 @@ public class Welcome {
 					status = true;
 			} catch(InputMismatchException e) {
 				System.out.println("Input must be integer.");
-				sc.nextLine();
-//				e.getMessage(); 
+				sc.nextLine(); 
 			} catch(Exception e) {
 				System.out.println(e.getMessage());
 			}

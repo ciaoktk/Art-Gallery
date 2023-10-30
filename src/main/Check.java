@@ -5,31 +5,24 @@ import java.util.regex.Pattern;
 
 public class Check {
 	public boolean checkWelcomeOption(int option) throws Exception {
-		if(Pattern.matches("[1-3]", ""+option))
+		if(Pattern.matches("[1-3]", Integer.toString(option)))
 			return true;
 		else 
 			throw new Exception("Option should be from 1 to 3.");
 	}
 	
 	public boolean checkAdminOption(int option) throws Exception {
-		if(Pattern.matches("[1-8]", ""+option))
+		if(Pattern.matches("[1-8]", Integer.toString(option)))
 			return true;
 		else 
 			throw new Exception("Option should be from 1 to 8.");
 	}
 	
 	public boolean checkUserOption(int option) throws Exception {
-		if(Pattern.matches("[1-7]", ""+option))
+		if(Pattern.matches("[1-7]", Integer.toString(option)))
 			return true;
 		else 
 			throw new Exception("Option should be from 1 to 7.");
-	}
-	
-	public boolean checkPhNo(String phNo) throws Exception {
-		if(Pattern.matches("09-\\d{9}", phNo)) 
-			return true;
-		else 
-			throw new Exception ("Phone number format is incorrect, please try again.");
 	}
 	
 	public boolean checkArtistAddress(String address) throws Exception {
@@ -37,6 +30,13 @@ public class Check {
 			return true;
 		} else
 			throw new Exception("Address format is incorrect, try again!");
+	}
+	
+	public boolean checkPhNo(String phNo) throws Exception {
+		if(Pattern.matches("09-\\d{9}", phNo)) 
+			return true;
+		else 
+			throw new Exception ("Phone number format is incorrect, please try again.");
 	}
 	
 	public boolean checkCustomerAddress(String address) throws Exception {
